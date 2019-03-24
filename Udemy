@@ -1,0 +1,622 @@
+install.packages("rvest")
+library(rvest)
+demo(package = 'rvest')
+demo(package = 'rvest', topic = 'zillow')
+x <- 10
+x == 10
+#How the OR logical operator works
+x == 10 | x > 4
+x == 5
+#How to use the NOT operator
+!x == 5
+df <- mtcars
+head(df)
+#Check df for all cars that get more than 20 mpg
+df[df$mpg > 20,]
+#or (both accomplish the same thing)
+subset(df, mpg > 20)
+#using the and operator
+subset(df, mpg > 20 & hp > 100)
+#or 
+df[(df$mpg > 20) & (df$hp > 100),]
+#Using the OR operator
+subset(df, mpg > 20 | hp > 100)
+
+#Using if, else and ifelse
+x <- 11
+if(x==10) {
+  #code 
+  print('Lets do this!')
+} else if (x==12) {
+  print('Too high :(')
+} else {
+  print('Please try again')
+}
+#Using an If statement with variables 
+hot <- FALSE
+temp <- 49
+if (temp > 80){
+  hot <- TRUE
+}
+print(hot)
+#Combining if, else if and else
+if (temp > 80){
+  print('Hot Outside!')
+} else if (temp <= 80 & temp >= 50){
+  print('Nice outside')
+} else if (temp == 45) {
+  print('Exactly 45 degrees outside')
+} else{
+  print('Its less than 50 degrees outside and its not exactly 45 degrees')
+}
+#Ham and cheese example
+ham <- 10
+cheese <- 10
+report <- 'blank'
+if ( ham > 10 & cheese >= 10) {
+  report <- 'Strong sales of both ham and cheese'
+} else if (ham == 0 & cheese == 0) {
+  report <- 'No Sales of ham and cheese'
+} else {
+  report <- 'We had sales today'
+}
+print(report)
+
+#Conditional Statements Excercise
+#Ex 1: Write a script that will print "Even Number" 
+#if the variable x is an even number, otherwise print "Not Even":
+number <- 4
+if (number %% 2 == 0) {
+  print('Even Number')
+} else {
+  print('Not an even number')
+}
+#The %% operator checks for a remainder
+#Ex 2: Write a script that will print 'Is a Matrix' 
+#if the variable x is a matrix, otherwise print "Not a Matrix". 
+#Hint: You may want to check out help(is.matrix)
+help(is.matrix)
+x <- matrix()
+if (is.matrix(x) = TRUE) {
+  print('Is a Matrix')
+} else {
+  print('Not a Matriz')
+}
+#Ex 3: Create a script that given a numeric vector x with a length 3, 
+#will print out the elements in order from high to low. You must use 
+#if,else if, and else statements for your logic. (This code will be relatively long)
+x <- c(3,7,1)
+if (x[1] > x[2]) {
+  #First and second place
+  first <- x[1]
+  sec <- x[2]
+} else {
+  first <- x[2]
+  sec <- x[1]
+} 
+print(paste(first,sec))
+if (x[3] > first & x[3] > sec) {
+  #Third element is largest
+  third <- x[1]
+  sec <- First
+  first <- x[3]
+} else if (x[3] < first & x[3] < sec) {
+  #Third element is smallest
+  third <- x[3]
+} else {
+  third <- sec
+  sec <- x[3]
+}
+print(paste(first, sec, third))
+#Ex 4: Write a script that uses if,else if, and 
+#else statements to print the max element in a numeric vector with 3 elements.
+x <- c(20, 30, 40)
+max(x)
+if (x[1] > x[2] & x[1] > x[3]) {
+  print(x[1])
+} else if (x[2] > x[3]) {
+  print(x[2])
+} else {
+  print(x[3])
+}
+#While Loops
+while (condition) {
+  #Code executed here
+  #While condition is true
+}
+x <- 1
+while (x<10){
+  print(paste0("X is: ",x))
+  x <- x + 1
+  if (x == 10) {
+    print("x is now equal to 10! Break Loop!")
+  }
+}
+#For Loops (iterating over an object)
+my.list <- list(c(1,2,3,4,5),head(mtcars),12)
+#You can name titem below whatever you want
+for (item in my.list) {
+  print(item)
+}
+mat <- matrix(1:25, nrow = 5)
+mat
+for (row in 1:nrow(mat)) {
+  for (col in 1:ncol(mat)) {
+    print(paste('The selected row is:', row))
+    print(paste('The element at row:', row,'and col:', col, 'is', mat[row,col]))
+  }
+}
+##Functions
+name_of_function <- fuction(input1, input2, input3 = 45){
+  #Code Executed
+  result = input1 + input2
+  return(result)
+}
+#Example of a function
+hello <- function(name='Yusuf'){
+  #Code that executes when the function is called
+  print(paste("Hello", name))
+}
+hello('Danny')
+add_num <- function(num1, num2){
+  my.sum <- num1 + num2
+  return(my.sum)
+}
+result <- add_num(2,33)
+times_five <- function(num){
+  my.result <- num * 5
+  return(my.result)
+}
+my.output <- times_five(100)
+print(my.output)
+
+#Example to show scope
+v <- "I am a global variable"
+stuff <- "I'm global stuff"
+fun <- function(stuff){
+  print(v)
+  stuff <- "Reassign stuff inside this function, fun"
+  print(stuff)
+}
+fun(stuff)
+print(stuff)
+#Functions excercise questions
+#Ex 2: Create a function that accepts two arguments, 
+#an integer and a vector of integers. It returns TRUE if the 
+#integer is present in the vector, otherwise it returns FALSE. 
+#Make sure you pay careful attention to your placement of the return(FALSE)
+#line in your function!
+check <- function(num, v){
+  for (ele in v) {
+    if (ele == num) {
+      return(TRUE)
+    }
+  }
+  return(FALSE)
+}
+print(check(2,c(1,12,3)))
+#Ex 3: Create a function that accepts two arguments, an integer and a 
+#vector of integers. It returns the count of the number of occurences of the 
+#integer in the input vector.
+ex3 <- function(number, vnumber) {
+  count <- 0
+  for (ele in vnumber){
+    if (ele == number){
+      count <- count + 1
+    }
+  }
+  return(count)
+}
+print(ex3(2,c(2,2,2,2,2,2,2,2)))
+#Ex 4: We want to ship bars of aluminum. We will create a function that 
+#accepts an integer representing the requested kilograms of aluminum for the 
+#package to be shipped. To fullfill these order, we have small bars 
+#(1 kilogram each) and big bars (5 kilograms each). Return the least number 
+#of bars needed. For example, a load of 6 kg requires a minimum of two bars 
+#(1 5kg bars and 1 1kg bars). A load of 17 kg requires a minimum of 5 bars 
+#(3 5kg bars and 2 1kg bars).
+
+#How many 5kg bars can we use? and how many 1kg bars do we need to fill in the gap
+#How many times does 5 go into required load number? (remainder is the number of 
+#1kg bars)
+bar_count <- function(pack){
+  #pack is the kg load to fill up
+  amount.of.ones <- pack %% 5
+  amount.of.fives <- (pack - amount.of.ones)/5
+  return <- amount.of.fives + amount.of.ones
+}
+print(bar_count(17))
+#Ex 5: Create a function that accepts 3 integer values and returns their sum. 
+#However, if an integer value is evenly divisible by 3, then it does not count 
+#towards the sum. Return zero if all numbers are evenly divisible by 3. 
+#Hint: You may want to use the append() function.
+ex5 <- function(int1, int2, int3) {
+  out <- sum(0)
+  if (int1%%3 != 0){
+    out <- append(int1,out)
+  }
+  if (int2%%3 != 0){
+    out <- append(int2,out)
+  }
+  if (int3%%3 != 0){
+    out <- append(int3,out)
+  }
+  return <- sum(out)
+}
+print(ex5(12,18,16))
+#Ex 6: Create a function that will return TRUE if an input integer is prime. 
+#Otherwise, return FALSE. You may want to look into the any() function. 
+#Prime numbers are only divisible by itself and one
+ex6 <- function (num) {
+  if (num == 2){
+    return(TRUE)
+  }
+  for (x in 2:(num-1)){
+    if (num%%x == 0){
+      return(FALSE)
+    }
+  }
+  return(TRUE)
+}
+print(ex6(2))
+
+#Advanced R Programming section
+#Creating a sequence
+seq(0,20, by = 2.5)
+#Sorting
+v <- c(1,9,22,11,34,15,99)
+#dec = "True" sorts in decending (highest to lowest), 
+#if you dont include dec it sorts in ascending order
+sort(v, dec = TRUE)
+av <- c('a', 'b','y','C')
+sort(av)
+rev(av)
+str(mtcars)
+summary(mtcars)
+append(v,av)
+#is. is a method of checking a data type
+#as. is a method of converting a data type
+
+#Use Sample to get a random number
+print(sample(1:10, 2))
+#Apply is used to apply a function over a vector
+v <- c(1:5)
+addrand <- function(x){
+  ran <- sample(1:100,1)
+  return(x+ran)
+}
+print(addrand(25))
+#lapply is used for lists
+resultl <- lapply(v,addrand)
+print(resultl)
+
+#Using sapply to apply a function over a list or vector
+times2 <- function(num) {
+  return(num*2)
+}
+result <- sapply(v,times2)
+print(result)
+#Anonymous functions
+v <- 1:5
+result <- sapply(v, function(num){
+  num *2
+})
+print(result)
+#Using sapply with a funciton
+add_choice <- function(num, choice){
+  return(num+choice)
+}
+sapply(v,add_choice, choice = 200)
+
+#grepl (logical) and grep (index)
+library(grepl)
+text <- "Hi there, do you know who you are voting for?"
+grepl('Yusuf',text)
+grep(5, v)
+
+#Dates
+# %d Day of the month (decimal number)
+#%m Month (decimal number)
+# %b Month (abbreviated)
+# %B Month (full name)
+# %y Year (2digit)
+# %Y Year (4digit)
+today <- Sys.Date()
+class(today)
+c <- '1990-01-01'
+class(c)
+my.date <- as.Date(c)
+class(my.date)
+as.Date("Nov-02-1994")
+my.date2 <- as.Date("Nov-02-1994",
+                    format = "%b-%d-%y")
+print(my.date2)
+#Time information POSIXct or POSTIXit
+as.POSIXct("11:02:03", format="%H:%M:%S")
+#Date time conversion functions to and from character
+strptime("11:02:03", format="%H:$M:%S")
+help(strptime)
+
+#Dplyr: Manipulating Data
+#Tidyr: Cleaning Data
+install.packages('nycflights13')
+library(dplyr)
+library(nycflights13)
+head(flights)
+summary(flights)
+#dplyr built in functions
+# filter() (and slice())
+View(flights)
+top.ouput.test <- head(filter(flights, 
+            month == 11, day ==3,
+            carrier=='AA'))
+View(top.ouput.test)
+# arrange() re-orders output 
+top.output.arrange <- head(arrange(flights, 
+                      year,month, day, arr_time))
+View(top.output.arrange)
+# Select() (and rename())
+head(select(flights,carrier, arr_time))
+rename <- head(rename(flights, AirlineCarrier = carrier))
+View(rename)
+# distinct()
+distinct(select(flights, carrier))
+# mutat() and (and transmute())
+mutate(flights, new_col = arr_delay - dep_delay)
+transmute(flights, new_col = arr_delay - dep_delay)
+#summarise()
+summary <- summarise(flights, avg_airtime = mean(air_time, 
+                                      na.rm = TRUE)
+View(Summary)
+# sample_n() and sample_frac()
+sample_n(flights, 200)
+sample_frac(flights, 0.10)
+
+#Pipe Operator 
+library(dplyr)
+df <- mtcars
+View(df)
+#Nesting
+result <- arrange(sample_n(filter(df, mpg>20), 
+                  size = 5), 
+                  desc(mpg))
+print(result)
+
+#Multiple Assigments
+a <- filter(df, mpg>20)
+b <- sample_n(a,size=5)
+result <- arrange(b,desc(mpg))
+print(result)
+
+#Pipe Operator
+# Data %>% op1 %>% op2 %>% op3
+result <- df %>% filter(mpg>20) %>% 
+  sample_n(size=5) %>% arrange(desc(mpg))
+print(result)
+
+#Training Excercise
+#1 Return rows of cars that have an mpg 
+#value greater than 20 and 6 cylinders.
+result1 <- df %>% filter(mpg>20 & cyl == 6)
+print(result1)
+#2 Reorder the Data Frame by cyl first, 
+#then by descending wt.
+result2 <- df %>% arrange(cyl) %>% arrange(
+  desc(wt))
+print(result2)
+#3 Select the columns mpg and hp
+result3 <- select(df, mpg, hp)
+print(result3)
+#4 Select the distinct values of the 
+# gear column
+result4 <- distinct(select(df, gear))
+print(result4)
+#5 Create a new column called "Performance" 
+#which is calculated by hp divided by wt.
+result5 <- mutate(df, Performance
+                 = hp / wt)
+print(result5)
+#6 Find the mean mpg using dplyr
+result6 <- summarise(df, 
+              avg_mpg = mean(mpg, 
+              na.rm = TRUE))
+print(result6)
+#7 Use pipe operators to get the 
+#mean hp value for cars with 6 cylinders.
+result7 <- df %>% filter(cyl == 6) %>% 
+  summarise(sd(hp)) 
+print(result7)
+
+#Guide to using Tidyr (for cleaning data)
+library(tidyr)
+library(data.table)
+#gather() collapsing multiple columns
+#into key-pair values
+comp <- c(1,1,1,2,2,2,3,3,3)
+yr <- c(1998,1999,2000,1998,1999,
+        2000,1998,1999,2000)
+q1 <- runif(9, min=0, max=100)
+q2 <- runif(9, min=0, max=100)
+q3 <- runif(9, min=0, max=100)
+q4 <- runif(9, min=0, max=100)
+df <- data.frame(comp=comp,year=yr,
+                 Qtr1 = q1,
+                 Qtr2 = q2,Qtr3 = q3,
+                 Qtr4 = q4)
+gather(df, Quarter, Revenue, Qtr1:Qtr4)
+#gather(data, key, value pair, columns you 
+#want to gather
+df %>% gather(Quarter, Revenue, Qtr1:Qtr4)
+#spread()
+stocks <- data.frame(
+  time = as.Date('2009-01-01') + 0:9,
+  x = rnorm(10, 0, 1),
+  y = rnorm(10, 0, 2),
+  z = rnorm(10, 0, 4)
+)
+
+stocks.gathered <- stocks%>%
+  gather(stock,price, x:z)
+head(stocks.gathered)
+spread(stocks.gathered, time, price)
+ 
+#Separate() turn a single variable column
+#into multiple columns
+df <- data.frame(x=c(NA,"a.x", "b.y", "c.z"))
+df
+df.sep <- separate(df, col = new.col, into = 
+           c('abc', 'xyz'), sep = '.')
+df.sep
+#unite is used to bring different columns together
+unite(mtcars, new.joined.col, mpg, hp, sep
+      = "--")
+#Data visualization with ggplot2
+#Library 
+library(ggplot2)
+#data and aesthetics
+pl <- ggplot(data=mtcars,aes(x=mpg,y=hp))
+#Geometries (point plot below)
+pl + geom_point()
+#facets (alow you to put multiple graphs on a single surface)
+pl + facet_grid(cyl ~ .)
+#statistics (adding a smooth layer)
+pl2 <- pl + facet_grid(cyl~.) + stat_smooth()
+#coordinates
+pl2 + coord_cartesian(xlim = c(15,25))
+#theme
+pl2 + coord_cartesian(xlim = c(15,25)) + theme_bw()
+
+#Histograms
+library(ggplot2)
+library(ggplot2movies)
+#Data & Aesthetics
+graph1 <- ggplot(movies,aes(x=rating))
+#Geometry
+graph2 <- print(graph1 + geom_histogram(binwidth = 0.1
+                          , aes(fill=..count..)))
+#alpha is used for transparency
+graph3 <- graph2 + xlab('Movie Rating') +
+  ylab('Count')
+print(graph3)
+
+#Scatterplots
+df <- mtcars
+#Data & Aesthetics
+pl <- ggplot(df, aes(x=wt, y=mpg))
+#Geometry
+print(pl + geom_point(size =3, alpha = 1))
+#Using size for a discrete variable is not advised
+print(pl + geom_point(aes(size=
+                      factor(cyl))))
+best.graph <- print(pl + geom_point(aes(shape=
+                  factor(cyl),
+                  color=factor(cyl),
+                   size=5)))
+print(best.graph)
+#Using hex color codes
+print(pl + geom_point(aes(size=
+                            factor(cyl),
+                          color='#56ea29')))
+color.graph <- best.graph +
+  scale_color_gradient(low='pink',
+                       high = 'red')
+print(color.graph)
+#Bar Plots (for categorical data)
+library(ggplot2)
+df <- mpg
+head(mpg)
+pl <- ggplot(df,aes(x=class))
+print(pl + geom_bar(aes(fill=factor(drv))))
+#Position = "dodge" shows side by side comparison for each category
+print(pl + geom_bar(aes(fill=drv),
+          position ="dodge"))
+#Position = "fill" shows a percentage of each category
+print(pl + geom_bar(aes(fill=drv),
+                    position ="fill"))
+#Box plots
+df <- mtcars
+#Need to have a categorical variable on the x axis
+pl <- ggplot(df, aes(x=factor(cyl)
+              , y=mpg))
+#Adding a theme
+print(pl + geom_boxplot(aes(
+  fill=factor(cyl)) + theme_bw()
+))
+#2 Variable Plotting with ggplot2
+library(ggplot2movies)
+pl <- ggplot(movies, aes(x=year, 
+              y=rating))
+pl2 <- pl + geom_bin2d(binwidth
+                       =c(3,3))
+#Using hexagons instead of bins
+library(hexbin)
+h1 <- pl + geom_hex()
+#Density Plot
+g1 <- pl + geom_density2d()
+print(g1)
+print(h1 + scale_fill_gradient(
+  high='red', low='blue'
+))
+#Coordinates and faceting
+pl <- ggplot(mpg, aes(x=displ, 
+          y=hwy)) + geom_point()
+print(pl)
+pl2 <- pl + coord_cartesian(xlim=c(1,4),
+              ylim=c(15,30))
+print(pl2)
+#Coord_fixed sets the graph so that the aspect ratio never gets reset
+pl3 <- pl + coord_fixed(ratio = 1/3)
+print(pl3)
+#Below creates seperate graphs, "." is everything else and before and after the ~ is the y & x variables
+print(pl + facet_grid(.~cyl))
+print(pl + facet_grid(drv~cyl))
+head(mpg)
+#Themes
+pl <- ggplot(mtcars, aes(
+  x=wt, y=mpg) + geom_point())
+print(pl)
+theme_set(theme_minimal())
+#Using the dark themes
+print(pl + theme_dark())
+#More theme options
+library(ggthemes)
+#Allows you to utilize way more themes
+print(pl + theme_fivethirtyeight())
+#ggplot2 Training Exercise
+#1 Create a bar graph with hwy on the x axis
+#and the bars highlighted in pink
+df <- mpg
+colnames(df)
+p1 <- ggplot(df, aes(x=hwy))
+print(p1)
+p1.1 <- p1 + geom_histogram(aes(fill='pink', bins=20, alpha = 0.5))
+print(p1.1)
+#2 Barplot of car counts per manufacturer 
+#with color fill defined by cyl count
+p2 <- ggplot(df,aes(x=manufacturer))
+print(p2)
+#Continues variables are good for geom_bar while
+#discrete variable are more condusive to geom_histogram
+p2.1 <- p2 + geom_bar(aes(fill=factor(cyl)))
+print(p2.1)
+#Switch now to use the txhousing dataset that comes with ggplot2
+#3 Create a scatterplot of volume versus sales. 
+#Afterwards play around with alpha and color 
+#arguments to clarify information.
+library(ggplot2)
+View(txhousing)
+df <- txhousing
+#print(head(df))
+df$volume[is.na(df$volume)] <- mean(df$volume)
+df$sales[is.na(df$sales)] <- mean(df$sales)
+p3 <- ggplot(txhousing, aes(x=volume, y=sales))
+p3.a <- p3 + geom_point(color = 'Blue',
+                        alpha = 0.3)
+print(p3.a)
+#Adding a fit smooth line
+p3.b <- p3.a + geom_smooth(color='red')
+print(p3.b)
+#Trying th adjust the coordinates of the graph
+p3.e <- p3.a + coord_cartesian(xlim=c(0,1000),
+                            ylim=c(0,10000000))
+print(p3.e)
