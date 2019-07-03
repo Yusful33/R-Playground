@@ -1,0 +1,226 @@
+#Reading the Data into R
+View(NBA.Records)
+salary <- read.csv('nba_salaries_1990_to_2018.csv')
+stats <- read.csv('Seasons_Stats 2.csv')
+#Looking into data
+head(salary)
+colnames(salary)
+nrow(stats)
+nrow(salary)
+colnames(stats)
+head(stats)
+#Loading Libraries
+install.library("reshape2")
+library(reshape2)
+library(reshape)
+library(dplyr)
+#Segmenting the datasets down
+colnames(salary)
+slimmed.stats <- stats[c('Player', 'Age', 'Pos', 'G', 'AST','PTS', 'Year')]
+slimmed.stats <- subset(slimmed.stats, Year > '1989')
+slimmed.salary <- salary[c('player', 'salary', 'season_start', 'season_end', 'team')]
+#Examining Data Structure
+str(slimmed.stats)
+str(salary)
+nrow(slimmed.stats)
+head(slimmed.salary)
+ncol(slimmed.salary)
+ncol(slimmed.stats)
+#renaming column in the salary dataset
+colnames(slimmed.salary)[which(names(slimmed.salary) == "player")] <- "Player"
+#Creating a new vlookup column in each dataset
+slimmed.stats$ID <- paste(slimmed.stats$Player, slimmed.stats$Year, sep="")
+head(slimmed.stats)
+slimmed.salary$ID <- paste(slimmed.salary$Player, slimmed.salary$season_start, sep="")
+head(slimmed.salary)
+#Testing if the data is duplicated for players
+#adavis1 <- subset(slimmed.stats, Player == 'Anthony Davis')
+#View(adavis1)
+#adavisSalary <- subset(slimmed.salary, Player == 'Anthony Davis')
+#View(adavisSalary)
+head(slimmed.salary)
+head(slimmed.stats)
+#Combining the datasets
+data <- merge(slimmed.salary, slimmed.stats,  by = 'ID' , all = TRUE)
+#data2 <- merge(slimmed.salary, slimmed.stats, by = 'ID' , all = TRUE)
+View(data)
+#Renaming the ID columns and then creating a new ID column
+colnames(data)[which(names(data) == "ID")] <- "ID2"
+colnames(data)
+data$ID <- paste(data$Year, data$team, sep="")
+#Slimming down the datasets
+data <- data[c('ID', 'Player', 'Year', 'Age', 'salary', 'team', 'Pos', 'G', 'AST', 'PTS')]
+head(data)
+str(data)
+#Renaming a column
+#colnames(data)[which(names(data) == "Player.x")] <- "Player"
+#Testing if the data is duplicated for players
+#adavis <- subset(data, Player == 'Anthony Davis')
+#View(adavis)
+#How you could replace n/a with mean
+#data$Year[is.na(data$Year)] <- mean(data$Year)
+#Trimming data down to not include N/A values
+is.na(data)
+#Removing rows that have NA values 
+row.has.na <- apply(data, 1, function(x)
+{any(is.na(x))
+})
+sum(row.has.na)
+data <- data[!row.has.na,]
+View(data)
+#Creating a sumif column for each team
+colnames(data)
+sum.if1 <- NULL
+sum.if1 <- as.data.frame(sum.if1)
+sum.if1 <- aggregate(data$salary, by = 
+                       list(Category = data$team, data$Year), FUN = sum)
+head(sum.if1)
+#Renaming Necessary Columns in SumIF1
+colnames(sum.if1)[which(names(sum.if) == "x")] <- "TotalTeamSalary"
+colnames(sum.if1)[which(names(sum.if) == "Category")] <- "Team"
+colnames(sum.if1)[which(names(sum.if) == "Group.2")] <- "Year"
+sum.if2<- NULL
+sum.if2 <- as.data.frame(sum.if2)
+sum.if2 <- aggregate(data$PTS, by = 
+                       list(Category = data$team, data$Year), FUN = sum)
+head(sum.if2)
+#Renaming Necessary Columns
+colnames(sum.if2)[which(names(sum.if) == "x")] <- "TotalTeamPTS"
+colnames(sum.if2)[which(names(sum.if) == "Category")] <- "Team"
+colnames(sum.if2)[which(names(sum.if) == "Group.2")] <- "Year"
+colnames(sum.if2)
+#Creating Unique IDs
+sum.if1$ID <- paste(sum.if1$Year, sum.if1$Team, sep="")
+colnames(sum.if1)
+sum.if2$ID <- paste(sum.if2$Year, sum.if2$Team, sep="")
+colnames(sum.if2)
+#Combing Sum.IF1 & 2
+sum.if <- merge(sum.if1, sum.if2, by = 'ID', all = FALSE)
+head(sum.if)
+#Pulling only the necessary columns
+sum.if <- sum.if[c('ID', 'Team.x', 'TotalTeamSalary', 'TotalTeamPTS')]
+colnames(sum.if)[which(names(sum.if) == "Team.x")] <- "Team"
+colnames(sum.if)
+#Adding sum if column to dataset
+data <- merge(sum.if, data, by = 'ID' , all = FALSE)
+head(data)
+#Removing unnecessary columns
+data <- data[c('ID', 'Team', 'TotalTeamSalary','TotalTeamPTS','Player.x',
+               'Age', 'salary',
+               'Pos', 'G', 'AST', 'PTS')]
+head(data)
+#Renaming Category to Team
+colnames(data)[which(names(data) == "salary")] <- "PlayerSalary"
+colnames(data)[which(names(data) == "Player.x")] <- "Player"
+head(data)
+#Writing This data to CSV
+write.csv(data, file = "NBAPlayerData.csv")
+
+
+
+
+#Adding new data (records)
+NBA.Records <- read.csv("NBAPerformance.csv")
+head(NBA.Records)
+##Below was done in excel but could have been done below instead
+#Indexing is rows,columns
+#NBA.Records <- NBA.Records[,0:4]
+#str(NBA.Records)
+#head(NBA.Records)
+#NBA.Records$Year <- as.numeric(NBA.Records$Year)
+#head(NBA.Records)
+#Below only takes the first four characters in the Year columns
+#NBA.Records$Year <- str_sub(NBA.Records$Year,1,4)
+#NBA.Records <- subset(NBA.Records, (Year > '89' | (Year < 00 & Year < 19)))
+#Updating all NBA team names
+NBA.Records$Team <- as.character(NBA.Records$Team)
+str(NBA.Records)
+#Simpliest find/replace for name changes
+str(NBA.Records)
+#Updating Team Names to Cities for easier merge
+NBA.Records$Team[NBA.Records$Team == "Thunder"] <- "OKC"
+NBA.Records$Team[NBA.Records$Team == "Supersonics"] <- "OKC"
+NBA.Records$Team[NBA.Records$Team == "Wizards"] <- "WAS"
+NBA.Records$Team[NBA.Records$Team == "Bullets"] <- "WAS"
+NBA.Records$Team[NBA.Records$Team == "Hawks"] <- "ATL"
+NBA.Records$Team[NBA.Records$Team == "Celtics"] <- "BOS"
+NBA.Records$Team[NBA.Records$Team == "Warriors"] <- "GSW"
+NBA.Records$Team[NBA.Records$Team == "Suns"] <- "PHX"
+NBA.Records$Team[NBA.Records$Team == "Rockets"] <- "HOU"
+NBA.Records$Team[NBA.Records$Team == "Jazz"] <- "UTA"
+NBA.Records$Team[NBA.Records$Team == "Timberwolves"] <- "MIN"
+NBA.Records$Team[NBA.Records$Team == "Bulls"] <- "CHI"
+NBA.Records$Team[NBA.Records$Team == "Nuggets"] <- "DEN"
+NBA.Records$Team[NBA.Records$Team == "Pistons"] <- "DET"
+NBA.Records$Team[NBA.Records$Team == "Mavericks"] <- "DAL"
+NBA.Records$Team[NBA.Records$Team == "Knicks"] <- "NYK"
+NBA.Records$Team[NBA.Records$Team == "76ers"] <- "PHI"
+NBA.Records$Team[NBA.Records$Team == "Nets"] <- "NJN"
+NBA.Records$Team[NBA.Records$Team == "Kings"] <- "SCA"
+NBA.Records$Team[NBA.Records$Team == "Clippers"] <- "LAC"
+NBA.Records$Team[NBA.Records$Team == "Lakers"] <- "LAL"
+NBA.Records$Team[NBA.Records$Team == "Bucks"] <- "MIL"
+NBA.Records$Team[NBA.Records$Team == "Kings"] <- "SAC"
+NBA.Records$Team[NBA.Records$Team == "Cavaliers"] <- "CLE"
+NBA.Records$Team[NBA.Records$Team == "Heat"] <- "MIA"
+NBA.Records$Team[NBA.Records$Team == "Grizzlies"] <- "MEM"
+NBA.Records$Team[NBA.Records$Team == "Magic"] <- "ORL"
+NBA.Records$Team[NBA.Records$Team == "Pacers"] <- "IND"
+NBA.Records$Team[NBA.Records$Team == "Raptors"] <- "TOR"
+NBA.Records$Team[NBA.Records$Team == "Spurs"] <- "SAN"
+NBA.Records$Team[NBA.Records$Team == "Trail Blazers"] <- "POR"
+NBA.Records$Team[NBA.Records$Team == "Pelicans"] <- "NOH"
+head(NBA.Records)
+#Creating a column to merge the data on
+NBA.Records$ID <- paste(NBA.Records$Year, NBA.Records$Team, sep="")
+head(NBA.Records)
+
+#Merging the data together
+head(data)
+head(NBA.Records)
+library(dplyr)
+data.full <- merge(data,NBA.Records, by = 'ID' , all = FALSE)
+head(data.full)
+#Selecting only the necessary columns
+colnames(data.full)
+head(data.full)
+#Creating a second ID column for players
+data.full$ID2 <- paste(data.full$Year, data.full$Player, sep="")
+colnames(data.full)
+data.full <- data.full[c('ID', 'Year', 'Team.x', 'TotalTeamPTS', 'TotalTeamSalary',
+                         'Record', 'Winning.Percentage','ID2','Player',
+                         'Age', 'PlayerSalary',
+                         'Pos', 'G', 'AST', 'PTS')]
+colnames(data.full)
+#Renaming the columns headers
+colnames(data.full)[which(names(data.full) == "ID")] <- "TeamID"
+colnames(data.full)[which(names(data.full) == "ID2")] <- "PlayerID"
+colnames(data.full)[which(names(data.full) == "Team.x")] <- "Team"
+#slimmed.salary$ID <- paste(slimmed.salary$Player, slimmed.salary$season_start, sep="")
+head(data.full)
+View(data.full)
+colnames(data.full)
+#Moving this data to a csv file
+colnames(data.full)
+write.csv(data.full, file = "AllNBAData.csv")
+View(data.full)
+
+#Multiple Regression
+colnames(data.full)
+WinningPercentage <- lm(Winning.Percentage~., data=data.full)
+summary(WinningPercentage)
+
+#Looking at US Salary Data
+AvgSalary <- read.csv("MedianSalaryState.csv")
+head(AvgSalary)
+colnames(AvgSalary)
+View(AvgSalary)
+colnames(AvgSalary)[which(names(AvgSalary) == "X..Of.Nobel.Prize.Winners")] <- "NobelPrizeWinners"
+colnames(AvgSalary)[which(names(AvgSalary) == "Salary")] <- "State"
+#Removing Index Columns
+AvgSalary <- select(AvgSalary, -X)
+AvgSalary <- select(AvgSalary, -X.1)
+help(ggplot)
+histo <- ggplot(AvgSalary, aes(State)) + geom_bar(aes(fill=AvgSalary),
+                                               color='black')
+print(histo)
